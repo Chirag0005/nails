@@ -44,7 +44,7 @@ export const SocialProofSection: React.FC = () => {
         {/* Testimonials 3-Column Grid */}
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 300px), 1fr))',
           gap: '2rem',
           marginBottom: '5rem'
         }}>

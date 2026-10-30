@@ -43,12 +43,10 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onOpenBooking 
         {/* Editorial Layout: Left List + Right Dynamic Visual Preview */}
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(12, 1fr)',
-          gap: '3.5rem',
           alignItems: 'start'
-        }}>
+        }} className="services-main-grid">
           {/* Left Column: Interactive Rituals Accordion / List (Cols 1-7) */}
-          <div style={{ gridColumn: 'span 12' }} className="services-list-col">
+          <div className="services-list-col">
             <div style={{
               display: 'flex',
               flexDirection: 'column',
@@ -178,7 +176,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onOpenBooking 
           </div>
 
           {/* Right Column: Sticky Dynamic Service Visual Showcase (Cols 8-12) */}
-          <div style={{ gridColumn: 'span 12' }} className="services-preview-col">
+          <div className="services-preview-col">
             <div style={{
               position: 'sticky',
               top: '6.5rem',
@@ -318,6 +316,10 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onOpenBooking 
       </div>
 
       <style>{`
+        .services-main-grid {
+          grid-template-columns: 1fr;
+          gap: 2.5rem;
+        }
         .service-row:hover h3 {
           color: var(--color-burgundy) !important;
         }
@@ -332,6 +334,10 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onOpenBooking 
           }
         }
         @media (min-width: 992px) {
+          .services-main-grid {
+            grid-template-columns: repeat(12, 1fr) !important;
+            gap: 3.5rem !important;
+          }
           .services-list-col {
             grid-column: span 7 !important;
           }

@@ -178,12 +178,10 @@ export const ScrollStorySection: React.FC = () => {
           {/* Main Story Composition */}
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(12, 1fr)',
-            gap: '3rem',
             alignItems: 'center'
-          }}>
+          }} className="story-main-grid">
             {/* Left Story Text Block (Cols 1-6) */}
-            <div style={{ gridColumn: 'span 12' }} className="story-text-pane">
+            <div className="story-text-pane">
               <span style={{
                 display: 'inline-block',
                 fontSize: '0.75rem',
@@ -238,7 +236,7 @@ export const ScrollStorySection: React.FC = () => {
             </div>
 
             {/* Right Visual Image Showcase (Cols 7-12) */}
-            <div style={{ gridColumn: 'span 12' }} className="story-img-pane">
+            <div className="story-img-pane">
               <div style={{
                 position: 'relative',
                 display: 'flex',
@@ -322,6 +320,10 @@ export const ScrollStorySection: React.FC = () => {
       </div>
 
       <style>{`
+        .story-main-grid {
+          grid-template-columns: 1fr;
+          gap: 1.5rem;
+        }
         @media (max-width: 991px) {
           .story-sticky-stage {
             padding: 1.5rem 0 !important;
@@ -346,6 +348,10 @@ export const ScrollStorySection: React.FC = () => {
           }
         }
         @media (min-width: 992px) {
+          .story-main-grid {
+            grid-template-columns: repeat(12, 1fr) !important;
+            gap: 3rem !important;
+          }
           .story-text-pane {
             grid-column: span 6 !important;
           }

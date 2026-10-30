@@ -38,7 +38,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenBooking }) => {
         top: '-150px',
         left: '50%',
         transform: 'translateX(-50%)',
-        width: '600px',
+        width: 'min(100%, 600px)',
         height: '300px',
         background: 'radial-gradient(circle, rgba(81, 27, 43, 0.4) 0%, transparent 70%)',
         pointerEvents: 'none'
@@ -91,7 +91,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenBooking }) => {
         {/* 4-Column Navigation & Info Grid */}
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))',
           gap: '3rem',
           marginBottom: '5rem'
         }}>

@@ -668,12 +668,7 @@ export const ThreeDExperience: React.FC<ThreeDExperienceProps> = ({ onOpenBookin
       }} />
 
       <div className="container">
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-          gap: '3.5rem',
-          alignItems: 'center'
-        }}>
+        <div className="three-d-main-grid">
           {/* Left Column: Editorial Storytelling */}
           <div style={{ zIndex: 2 }}>
             <span className="section-label light">
@@ -879,6 +874,18 @@ export const ThreeDExperience: React.FC<ThreeDExperienceProps> = ({ onOpenBookin
       </div>
 
       <style>{`
+        .three-d-main-grid {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 2.5rem;
+          align-items: center;
+        }
+        @media (min-width: 992px) {
+          .three-d-main-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 3.5rem !important;
+          }
+        }
         .three-d-canvas-wrap {
           height: 560px;
         }

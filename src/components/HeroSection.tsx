@@ -56,12 +56,10 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenBooking, onExplo
       <div className="container" style={{ position: 'relative', zIndex: 2, width: '100%' }}>
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(12, 1fr)',
-          gap: '2rem',
           alignItems: 'center'
-        }}>
+        }} className="hero-main-grid">
           {/* Left Column: Editorial Headline & Meta (Cols 1-7) */}
-          <div style={{ gridColumn: 'span 12' }} className="hero-text-col">
+          <div className="hero-text-col">
             {/* Editorial Collection Tag & Location */}
             <div style={{
               display: 'flex',
@@ -197,7 +195,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenBooking, onExplo
           </div>
 
           {/* Right Column: Hero High-Res Imagery (Cols 8-12) */}
-          <div style={{ gridColumn: 'span 12' }} className="hero-image-col">
+          <div className="hero-image-col">
             <div style={{
               position: 'relative',
               borderRadius: 'var(--radius-lg)',
@@ -237,21 +235,24 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenBooking, onExplo
                 }} />
 
                 {/* Floating Artwork Badge in Bottom Corner */}
-                <div style={{
-                  position: 'absolute',
-                  bottom: '1.25rem',
-                  left: '1.25rem',
-                  right: '1.25rem',
-                  padding: '1rem 1.25rem',
-                  backgroundColor: 'rgba(250, 246, 240, 0.92)',
-                  backdropFilter: 'blur(12px)',
-                  WebkitBackdropFilter: 'blur(12px)',
-                  borderRadius: 'var(--radius-md)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  boxShadow: '0 8px 25px rgba(0,0,0,0.1)'
-                }}>
+                <div
+                  className="hero-floating-badge"
+                  style={{
+                    position: 'absolute',
+                    bottom: '1.25rem',
+                    left: '1.25rem',
+                    right: '1.25rem',
+                    padding: '1rem 1.25rem',
+                    backgroundColor: 'rgba(250, 246, 240, 0.92)',
+                    backdropFilter: 'blur(12px)',
+                    WebkitBackdropFilter: 'blur(12px)',
+                    borderRadius: 'var(--radius-md)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    boxShadow: '0 8px 25px rgba(0,0,0,0.1)'
+                  }}
+                >
                   <div>
                     <span style={{
                       display: 'block',
@@ -373,6 +374,12 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenBooking, onExplo
             grid-template-columns: repeat(3, 1fr) !important;
             gap: 0.85rem !important;
           }
+          .hero-floating-badge {
+            bottom: 0.65rem !important;
+            left: 0.65rem !important;
+            right: 0.65rem !important;
+            padding: 0.65rem 0.85rem !important;
+          }
         }
         @media (max-width: 768px) {
           .hero-atelier-choice-badge {
@@ -382,7 +389,15 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenBooking, onExplo
             height: 60px !important;
           }
         }
+        .hero-main-grid {
+          grid-template-columns: 1fr;
+          gap: 2.5rem;
+        }
         @media (min-width: 992px) {
+          .hero-main-grid {
+            grid-template-columns: repeat(12, 1fr) !important;
+            gap: 2rem !important;
+          }
           .hero-text-col {
             grid-column: span 6 !important;
           }

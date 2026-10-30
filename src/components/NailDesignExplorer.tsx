@@ -97,12 +97,10 @@ export const NailDesignExplorer: React.FC<NailDesignExplorerProps> = ({ onOpenBo
         }}>
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(12, 1fr)',
             alignItems: 'stretch'
-          }}>
+          }} className="explorer-main-grid">
             {/* Left Image Showcase (Cols 1-7) */}
             <div style={{
-              gridColumn: 'span 12',
               position: 'relative',
               minHeight: '440px',
               backgroundColor: '#1A0D12'
@@ -192,7 +190,6 @@ export const NailDesignExplorer: React.FC<NailDesignExplorerProps> = ({ onOpenBo
 
             {/* Right Information & Action Panel (Cols 8-12) */}
             <div style={{
-              gridColumn: 'span 12',
               padding: 'clamp(2rem, 4vw, 3.5rem)',
               display: 'flex',
               flexDirection: 'column',
@@ -319,6 +316,9 @@ export const NailDesignExplorer: React.FC<NailDesignExplorerProps> = ({ onOpenBo
       </div>
 
       <style>{`
+        .explorer-main-grid {
+          grid-template-columns: 1fr;
+        }
         @media (max-width: 768px) {
           .explorer-img-col {
             min-height: 320px !important;
@@ -348,6 +348,9 @@ export const NailDesignExplorer: React.FC<NailDesignExplorerProps> = ({ onOpenBo
           }
         }
         @media (min-width: 992px) {
+          .explorer-main-grid {
+            grid-template-columns: repeat(12, 1fr) !important;
+          }
           .explorer-img-col {
             grid-column: span 7 !important;
           }

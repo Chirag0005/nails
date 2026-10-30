@@ -109,10 +109,8 @@ export const NailArtGallery: React.FC<NailArtGalleryProps> = ({ onOpenBooking })
         {/* Curated Editorial Asymmetrical Gallery Grid */}
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(12, 1fr)',
-          gap: '2rem',
           alignItems: 'start'
-        }}>
+        }} className="gallery-main-grid">
           {filteredItems.map((item, index) => {
             // Give featured items 8 columns, others 4 columns or 6 columns for an asymmetrical magazine spread
             const isSpanEight = index === 0 || index === 3;
@@ -260,7 +258,6 @@ export const NailArtGallery: React.FC<NailArtGalleryProps> = ({ onOpenBooking })
               overflow: 'hidden',
               boxShadow: '0 30px 80px rgba(0,0,0,0.5)',
               display: 'grid',
-              gridTemplateColumns: 'repeat(12, 1fr)',
               animation: 'slideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards'
             }}
             className="gallery-lightbox-modal"
@@ -479,6 +476,16 @@ export const NailArtGallery: React.FC<NailArtGalleryProps> = ({ onOpenBooking })
       )}
 
       <style>{`
+        .gallery-main-grid {
+          grid-template-columns: 1fr;
+          gap: 1.5rem;
+        }
+        @media (min-width: 768px) {
+          .gallery-main-grid {
+            grid-template-columns: repeat(12, 1fr) !important;
+            gap: 2rem !important;
+          }
+        }
         .gallery-card-container:hover .gallery-item-image {
           transform: scale(1.04);
         }
@@ -486,6 +493,9 @@ export const NailArtGallery: React.FC<NailArtGalleryProps> = ({ onOpenBooking })
           background-color: var(--color-burgundy) !important;
           color: var(--color-ivory);
           transform: scale(1.1);
+        }
+        .gallery-lightbox-modal {
+          grid-template-columns: 1fr;
         }
         @media (max-width: 991px) {
           .gallery-card-col {
@@ -513,6 +523,9 @@ export const NailArtGallery: React.FC<NailArtGalleryProps> = ({ onOpenBooking })
           }
         }
         @media (min-width: 992px) {
+          .gallery-lightbox-modal {
+            grid-template-columns: repeat(12, 1fr) !important;
+          }
           .lightbox-img-col {
             grid-column: span 7 !important;
           }
