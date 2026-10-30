@@ -124,11 +124,14 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onOpenBooking 
 
                     {/* Expandable Details when active */}
                     {isActive && (
-                      <div style={{
-                        marginTop: '1.25rem',
-                        paddingLeft: '3rem',
-                        animation: 'fadeIn 0.3s ease-out'
-                      }}>
+                      <div
+                        style={{
+                          marginTop: '1.25rem',
+                          paddingLeft: '3rem',
+                          animation: 'fadeIn 0.3s ease-out'
+                        }}
+                        className="service-expanded-content"
+                      >
                         <p style={{
                           fontSize: '0.98rem',
                           color: 'rgba(41, 28, 32, 0.8)',
@@ -317,6 +320,16 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onOpenBooking 
       <style>{`
         .service-row:hover h3 {
           color: var(--color-burgundy) !important;
+        }
+        @media (max-width: 768px) {
+          .service-expanded-content {
+            padding-left: 0.5rem !important;
+          }
+        }
+        @media (max-width: 480px) {
+          .service-row .btn {
+            width: 100% !important;
+          }
         }
         @media (min-width: 992px) {
           .services-list-col {

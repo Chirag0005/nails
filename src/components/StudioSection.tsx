@@ -61,7 +61,7 @@ export const StudioSection: React.FC = () => {
             marginTop: '2rem',
             flexWrap: 'wrap',
             justifyContent: 'center'
-          }}>
+          }} className="studio-tab-buttons">
             <button
               onClick={() => setActiveTab('interior')}
               style={{
@@ -123,16 +123,19 @@ export const StudioSection: React.FC = () => {
         </div>
 
         {/* Big Visual Showcase */}
-        <div style={{
-          position: 'relative',
-          borderRadius: 'var(--radius-lg)',
-          overflow: 'hidden',
-          aspectRatio: '16/9',
-          maxHeight: '620px',
-          boxShadow: 'var(--shadow-luxury)',
-          marginBottom: '3.5rem',
-          backgroundColor: '#1A0D12'
-        }}>
+        <div
+          style={{
+            position: 'relative',
+            borderRadius: 'var(--radius-lg)',
+            overflow: 'hidden',
+            aspectRatio: '16/9',
+            maxHeight: '620px',
+            boxShadow: 'var(--shadow-luxury)',
+            marginBottom: '3.5rem',
+            backgroundColor: '#1A0D12'
+          }}
+          className="studio-showcase-wrap"
+        >
           <img
             key={currentVisual.src}
             src={currentVisual.src}
@@ -145,24 +148,27 @@ export const StudioSection: React.FC = () => {
             }}
           />
 
-          <div style={{
-            position: 'absolute',
-            bottom: '2rem',
-            left: '2rem',
-            right: '2rem',
-            backgroundColor: 'rgba(41, 28, 32, 0.85)',
-            backdropFilter: 'blur(12px)',
-            WebkitBackdropFilter: 'blur(12px)',
-            borderRadius: 'var(--radius-md)',
-            padding: '1.5rem 2rem',
-            color: 'var(--color-ivory)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            flexWrap: 'wrap',
-            gap: '1rem',
-            border: '1px solid rgba(255, 255, 255, 0.1)'
-          }}>
+          <div
+            style={{
+              position: 'absolute',
+              bottom: '2rem',
+              left: '2rem',
+              right: '2rem',
+              backgroundColor: 'rgba(41, 28, 32, 0.85)',
+              backdropFilter: 'blur(12px)',
+              WebkitBackdropFilter: 'blur(12px)',
+              borderRadius: 'var(--radius-md)',
+              padding: '1.5rem 2rem',
+              color: 'var(--color-ivory)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              flexWrap: 'wrap',
+              gap: '1rem',
+              border: '1px solid rgba(255, 255, 255, 0.1)'
+            }}
+            className="studio-showcase-caption"
+          >
             <div>
               <h3 style={{
                 fontFamily: 'var(--font-serif)',
@@ -286,6 +292,30 @@ export const StudioSection: React.FC = () => {
           </div>
         </div>
       </div>
+
+      <style>{`
+        @media (max-width: 768px) {
+          .studio-showcase-caption {
+            bottom: 1rem !important;
+            left: 1rem !important;
+            right: 1rem !important;
+            padding: 1rem 1.25rem !important;
+          }
+          .studio-showcase-caption h3 {
+            font-size: 1.3rem !important;
+          }
+          .studio-showcase-wrap {
+            aspect-ratio: 4/3 !important;
+            margin-bottom: 2.5rem !important;
+          }
+        }
+        @media (max-width: 480px) {
+          .studio-tab-buttons button {
+            padding: 0.55rem 1rem !important;
+            font-size: 0.75rem !important;
+          }
+        }
+      `}</style>
     </section>
   );
 };

@@ -77,7 +77,7 @@ export const NailArtGallery: React.FC<NailArtGalleryProps> = ({ onOpenBooking })
             gap: '0.65rem',
             flexWrap: 'wrap',
             marginTop: '2.5rem'
-          }}>
+          }} className="gallery-filter-pills">
             {categories.map((cat) => {
               const isActive = activeCategory === cat.key;
               return (
@@ -263,6 +263,7 @@ export const NailArtGallery: React.FC<NailArtGalleryProps> = ({ onOpenBooking })
               gridTemplateColumns: 'repeat(12, 1fr)',
               animation: 'slideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards'
             }}
+            className="gallery-lightbox-modal"
           >
             {/* Close Button */}
             <button
@@ -489,6 +490,26 @@ export const NailArtGallery: React.FC<NailArtGalleryProps> = ({ onOpenBooking })
         @media (max-width: 991px) {
           .gallery-card-col {
             grid-column: span 12 !important;
+          }
+          .gallery-lightbox-modal {
+            max-height: 92vh !important;
+            overflow-y: auto !important;
+          }
+          .lightbox-img-col {
+            min-height: 250px !important;
+            max-height: 320px !important;
+          }
+          .lightbox-details-col {
+            padding: 1.5rem 1.25rem !important;
+          }
+        }
+        @media (max-width: 500px) {
+          .gallery-filter-pills {
+            gap: 0.5rem !important;
+          }
+          .gallery-filter-pills button {
+            padding: 0.55rem 1rem !important;
+            font-size: 0.75rem !important;
           }
         }
         @media (min-width: 992px) {

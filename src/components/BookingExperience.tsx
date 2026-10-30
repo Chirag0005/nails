@@ -164,19 +164,23 @@ export const BookingExperience: React.FC<BookingExperienceProps> = ({
           flexDirection: 'column',
           animation: 'slideUp 0.3s ease-out forwards'
         }}
+        className="booking-modal-card"
       >
         {/* Modal Header */}
-        <div style={{
-          padding: '1.75rem 2rem',
-          borderBottom: '1px solid rgba(81, 27, 43, 0.1)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          backgroundColor: '#FFFFFF',
-          position: 'sticky',
-          top: 0,
-          zIndex: 10
-        }}>
+        <div
+          style={{
+            padding: '1.75rem 2rem',
+            borderBottom: '1px solid rgba(81, 27, 43, 0.1)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            backgroundColor: '#FFFFFF',
+            position: 'sticky',
+            top: 0,
+            zIndex: 10
+          }}
+          className="booking-modal-header"
+        >
           <div>
             <span className="section-label" style={{ marginBottom: 0 }}>
               Atelier Reservation • Step 0{step} of 05
@@ -254,7 +258,7 @@ export const BookingExperience: React.FC<BookingExperienceProps> = ({
         </div>
 
         {/* Modal Body */}
-        <div style={{ padding: '2rem', flex: 1 }}>
+        <div style={{ padding: '2rem', flex: 1 }} className="booking-modal-body">
           {/* STEP 1: SELECT SERVICE */}
           {step === 1 && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
@@ -433,8 +437,8 @@ export const BookingExperience: React.FC<BookingExperienceProps> = ({
 
               <div style={{
                 display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))',
-                gap: '0.85rem'
+                gridTemplateColumns: 'repeat(auto-fill, minmax(105px, 1fr))',
+                gap: '0.65rem'
               }}>
                 {TIME_SLOTS.map((time, idx) => {
                   const isSelected = selectedTime === time;
@@ -450,7 +454,7 @@ export const BookingExperience: React.FC<BookingExperienceProps> = ({
                         if (errors.time) setErrors({});
                       }}
                       style={{
-                        padding: '1rem 0.5rem',
+                        padding: '0.85rem 0.4rem',
                         borderRadius: 'var(--radius-md)',
                         border: isSelected
                           ? '2px solid var(--color-burgundy)'
@@ -473,7 +477,7 @@ export const BookingExperience: React.FC<BookingExperienceProps> = ({
                         gap: '0.2rem'
                       }}
                     >
-                      <span style={{ fontWeight: 600, fontSize: '0.95rem' }}>{time}</span>
+                      <span style={{ fontWeight: 600, fontSize: '0.9rem' }}>{time}</span>
                       <span style={{ fontSize: '0.68rem', opacity: 0.8 }}>
                         {isSimulatedBooked ? 'Unavailable' : 'Available'}
                       </span>
@@ -492,7 +496,10 @@ export const BookingExperience: React.FC<BookingExperienceProps> = ({
 
           {/* STEP 4: CUSTOMER DETAILS */}
           {step === 4 && (
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1.25rem' }}>
+            <div
+              style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1.25rem' }}
+              className="booking-form-grid"
+            >
               <div style={{ gridColumn: 'span 2' }}>
                 <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 600, textTransform: 'uppercase', marginBottom: '0.4rem' }}>
                   Full Name *
@@ -650,12 +657,15 @@ export const BookingExperience: React.FC<BookingExperienceProps> = ({
                   </span>
                 </div>
 
-                <div style={{
-                  display: 'grid',
-                  gridTemplateColumns: 'repeat(2, 1fr)',
-                  gap: '1.25rem',
-                  fontSize: '0.9rem'
-                }}>
+                <div
+                  style={{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(2, 1fr)',
+                    gap: '1.25rem',
+                    fontSize: '0.9rem'
+                  }}
+                  className="booking-summary-grid"
+                >
                   <div>
                     <span style={{ display: 'block', fontSize: '0.75rem', color: 'var(--color-rosewood)', textTransform: 'uppercase' }}>
                       Date &amp; Time
@@ -799,17 +809,20 @@ export const BookingExperience: React.FC<BookingExperienceProps> = ({
 
         {/* Modal Footer Controls */}
         {step < 6 && (
-          <div style={{
-            padding: '1.25rem 2rem',
-            borderTop: '1px solid rgba(81, 27, 43, 0.1)',
-            backgroundColor: '#FFFFFF',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            position: 'sticky',
-            bottom: 0,
-            zIndex: 10
-          }}>
+          <div
+            style={{
+              padding: '1.25rem 2rem',
+              borderTop: '1px solid rgba(81, 27, 43, 0.1)',
+              backgroundColor: '#FFFFFF',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              position: 'sticky',
+              bottom: 0,
+              zIndex: 10
+            }}
+            className="booking-modal-footer"
+          >
             {step > 1 ? (
               <button
                 onClick={handlePrevStep}
@@ -843,6 +856,39 @@ export const BookingExperience: React.FC<BookingExperienceProps> = ({
           </div>
         )}
       </div>
+
+      <style>{`
+        @media (max-width: 600px) {
+          .booking-modal-header {
+            padding: 1.15rem 1.25rem !important;
+          }
+          .booking-modal-header h3 {
+            font-size: 1.2rem !important;
+          }
+          .booking-modal-body {
+            padding: 1.25rem 1rem !important;
+          }
+          .booking-modal-footer {
+            padding: 1rem 1.25rem !important;
+          }
+          .booking-form-grid {
+            grid-template-columns: 1fr !important;
+            gap: 1rem !important;
+          }
+          .booking-form-grid > div {
+            grid-column: span 1 !important;
+          }
+        }
+        @media (max-width: 540px) {
+          .booking-summary-grid {
+            grid-template-columns: 1fr !important;
+            gap: 1rem !important;
+          }
+          .booking-summary-grid > div {
+            grid-column: span 1 !important;
+          }
+        }
+      `}</style>
     </div>
   );
 };

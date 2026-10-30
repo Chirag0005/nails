@@ -46,18 +46,21 @@ export const Footer: React.FC<FooterProps> = ({ onOpenBooking }) => {
 
       <div className="container" style={{ position: 'relative', zIndex: 2 }}>
         {/* Top Grand Booking Banner */}
-        <div style={{
-          backgroundColor: 'rgba(81, 27, 43, 0.45)',
-          borderRadius: 'var(--radius-lg)',
-          border: '1px solid rgba(197, 164, 109, 0.25)',
-          padding: 'clamp(2.5rem, 5vw, 4rem)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          flexWrap: 'wrap',
-          gap: '2rem',
-          marginBottom: '5rem'
-        }}>
+        <div
+          style={{
+            backgroundColor: 'rgba(81, 27, 43, 0.45)',
+            borderRadius: 'var(--radius-lg)',
+            border: '1px solid rgba(197, 164, 109, 0.25)',
+            padding: 'clamp(2.5rem, 5vw, 4rem)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            flexWrap: 'wrap',
+            gap: '2rem',
+            marginBottom: '5rem'
+          }}
+          className="footer-booking-banner"
+        >
           <div>
             <span className="section-label light" style={{ marginBottom: '0.5rem' }}>
               Reserve Your Private Session
@@ -277,16 +280,18 @@ export const Footer: React.FC<FooterProps> = ({ onOpenBooking }) => {
           textAlign: 'center',
           borderTop: '1px solid rgba(250, 246, 240, 0.08)',
           paddingTop: '3.5rem',
-          paddingBottom: '2.5rem'
+          paddingBottom: '2.5rem',
+          overflow: 'hidden'
         }}>
           <h2 style={{
             fontFamily: 'var(--font-serif)',
-            fontSize: 'clamp(2.5rem, 8.5vw, 7.5rem)',
+            fontSize: 'clamp(2rem, 9.5vw, 7.5rem)',
             letterSpacing: '0.18em',
             color: 'rgba(250, 246, 240, 0.06)',
             textTransform: 'uppercase',
             lineHeight: 0.9,
-            userSelect: 'none'
+            userSelect: 'none',
+            wordBreak: 'break-word'
           }}>
             MAISON NAILS
           </h2>
@@ -327,6 +332,17 @@ export const Footer: React.FC<FooterProps> = ({ onOpenBooking }) => {
           </button>
         </div>
       </div>
+
+      <style>{`
+        @media (max-width: 500px) {
+          .footer-booking-banner {
+            padding: 1.75rem 1.25rem !important;
+          }
+          .footer-booking-banner .btn {
+            width: 100% !important;
+          }
+        }
+      `}</style>
     </footer>
   );
 };

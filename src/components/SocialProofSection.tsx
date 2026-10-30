@@ -62,6 +62,7 @@ export const SocialProofSection: React.FC = () => {
                 justifyContent: 'space-between',
                 position: 'relative'
               }}
+              className="testimonial-card"
             >
               <div>
                 {/* 5-Star Rating */}
@@ -159,11 +160,14 @@ export const SocialProofSection: React.FC = () => {
           </div>
 
           {/* Editorial 4-photo Grid */}
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
-            gap: '1.25rem'
-          }}>
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+              gap: '1.25rem'
+            }}
+            className="insta-grid"
+          >
             {GALLERY_ITEMS.slice(0, 4).map((item) => (
               <div
                 key={item.id}
@@ -223,6 +227,15 @@ export const SocialProofSection: React.FC = () => {
         }
         .insta-tile:hover .insta-overlay {
           opacity: 1 !important;
+        }
+        @media (max-width: 500px) {
+          .insta-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 0.75rem !important;
+          }
+          .testimonial-card {
+            padding: 1.75rem 1.25rem !important;
+          }
         }
       `}</style>
     </section>

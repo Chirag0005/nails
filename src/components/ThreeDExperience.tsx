@@ -507,7 +507,7 @@ export const ThreeDExperience: React.FC<ThreeDExperienceProps> = ({ onOpenBookin
     fillLight.position.set(1, -3.5, 4);
     scene.add(fillLight);
 
-    // 9. Standard Mouse Tracking (no custom cursor)
+    // 9. Standard Mouse & Mobile Touch Tracking
     const handleMouseMove = (e: MouseEvent) => {
       const rect = container.getBoundingClientRect();
       const x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
@@ -516,7 +516,19 @@ export const ThreeDExperience: React.FC<ThreeDExperienceProps> = ({ onOpenBookin
       mousePos.current.targetY = y * 0.35;
     };
 
+    const handleTouchMove = (e: TouchEvent) => {
+      if (e.touches.length > 0) {
+        const touch = e.touches[0];
+        const rect = container.getBoundingClientRect();
+        const x = ((touch.clientX - rect.left) / rect.width) * 2 - 1;
+        const y = -(((touch.clientY - rect.top) / rect.height) * 2 - 1);
+        mousePos.current.targetX = x * 0.55;
+        mousePos.current.targetY = y * 0.4;
+      }
+    };
+
     container.addEventListener('mousemove', handleMouseMove);
+    container.addEventListener('touchmove', handleTouchMove, { passive: true });
 
     // 10. Animation Loop with Smooth Damping
     let animationFrameId: number;
@@ -570,6 +582,7 @@ export const ThreeDExperience: React.FC<ThreeDExperienceProps> = ({ onOpenBookin
     return () => {
       window.removeEventListener('resize', handleResize);
       container.removeEventListener('mousemove', handleMouseMove);
+      container.removeEventListener('touchmove', handleTouchMove);
       cancelAnimationFrame(animationFrameId);
       renderer.dispose();
       nailGeometry.dispose();
@@ -697,11 +710,14 @@ export const ThreeDExperience: React.FC<ThreeDExperienceProps> = ({ onOpenBookin
                 Select Atelier Finish
               </div>
 
-              <div style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(2, 1fr)',
-                gap: '0.75rem'
-              }}>
+              <div
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(2, 1fr)',
+                  gap: '0.75rem'
+                }}
+                className="finish-options-grid"
+              >
                 {FINISH_OPTIONS.map((finish) => {
                   const isSelected = selectedFinish.id === finish.id;
                   return (
@@ -791,16 +807,18 @@ export const ThreeDExperience: React.FC<ThreeDExperienceProps> = ({ onOpenBookin
           </div>
 
           {/* Right Column: Three.js Interactive Canvas */}
-          <div style={{
-            position: 'relative',
-            height: '560px',
-            width: '100%',
-            borderRadius: 'var(--radius-lg)',
-            border: '1px solid rgba(250, 246, 240, 0.12)',
-            background: 'radial-gradient(circle at 50% 40%, rgba(59, 18, 30, 0.5) 0%, rgba(26, 16, 20, 0.95) 100%)',
-            boxShadow: 'inset 0 0 80px rgba(0, 0, 0, 0.6), 0 20px 50px rgba(0,0,0,0.4)',
-            overflow: 'hidden'
-          }}>
+          <div
+            style={{
+              position: 'relative',
+              width: '100%',
+              borderRadius: 'var(--radius-lg)',
+              border: '1px solid rgba(250, 246, 240, 0.12)',
+              background: 'radial-gradient(circle at 50% 40%, rgba(59, 18, 30, 0.5) 0%, rgba(26, 16, 20, 0.95) 100%)',
+              boxShadow: 'inset 0 0 80px rgba(0, 0, 0, 0.6), 0 20px 50px rgba(0,0,0,0.4)',
+              overflow: 'hidden'
+            }}
+            className="three-d-canvas-wrap"
+          >
             <div
               ref={mountRef}
               style={{
@@ -811,48 +829,86 @@ export const ThreeDExperience: React.FC<ThreeDExperienceProps> = ({ onOpenBookin
             />
 
             {/* Interactive hint floating badge */}
-            <div style={{
-              position: 'absolute',
-              bottom: '1.5rem',
-              left: '50%',
-              transform: 'translateX(-50%)',
-              background: 'rgba(26, 16, 20, 0.85)',
-              backdropFilter: 'blur(10px)',
-              padding: '0.55rem 1.35rem',
-              borderRadius: 'var(--radius-full)',
-              border: '1px solid rgba(250, 246, 240, 0.15)',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '0.55rem',
-              fontSize: '0.75rem',
-              color: 'rgba(250, 246, 240, 0.85)',
-              pointerEvents: 'none',
-              boxShadow: '0 8px 20px rgba(0,0,0,0.3)'
-            }}>
-              <Eye size={13} style={{ color: 'var(--color-champagne)' }} />
-              Move pointer to rotate sculpture &amp; inspect light reflections
+            <div
+              style={{
+                position: 'absolute',
+                bottom: '1.5rem',
+                left: '50%',
+                transform: 'translateX(-50%)',
+                background: 'rgba(26, 16, 20, 0.85)',
+                backdropFilter: 'blur(10px)',
+                padding: '0.55rem 1.35rem',
+                borderRadius: 'var(--radius-full)',
+                border: '1px solid rgba(250, 246, 240, 0.15)',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.55rem',
+                fontSize: '0.75rem',
+                color: 'rgba(250, 246, 240, 0.85)',
+                pointerEvents: 'none',
+                boxShadow: '0 8px 20px rgba(0,0,0,0.3)'
+              }}
+              className="three-d-hint-badge"
+            >
+              <Eye size={13} style={{ color: 'var(--color-champagne)', flexShrink: 0 }} />
+              <span>Move pointer or drag to rotate &amp; inspect reflections</span>
             </div>
 
             {/* Currently Active Finish badge */}
-            <div style={{
-              position: 'absolute',
-              top: '1.5rem',
-              right: '1.5rem',
-              padding: '0.45rem 1.1rem',
-              borderRadius: 'var(--radius-full)',
-              background: 'rgba(197, 164, 109, 0.22)',
-              backdropFilter: 'blur(8px)',
-              border: '1px solid var(--color-champagne)',
-              fontSize: '0.75rem',
-              color: 'var(--color-champagne-light)',
-              fontWeight: 600,
-              letterSpacing: '0.04em'
-            }}>
+            <div
+              style={{
+                position: 'absolute',
+                top: '1.5rem',
+                right: '1.5rem',
+                padding: '0.45rem 1.1rem',
+                borderRadius: 'var(--radius-full)',
+                background: 'rgba(197, 164, 109, 0.22)',
+                backdropFilter: 'blur(8px)',
+                border: '1px solid var(--color-champagne)',
+                fontSize: '0.75rem',
+                color: 'var(--color-champagne-light)',
+                fontWeight: 600,
+                letterSpacing: '0.04em'
+              }}
+              className="three-d-active-finish-badge"
+            >
               {selectedFinish.name}
             </div>
           </div>
         </div>
       </div>
+
+      <style>{`
+        .three-d-canvas-wrap {
+          height: 560px;
+        }
+        @media (max-width: 768px) {
+          .three-d-canvas-wrap {
+            height: 420px;
+          }
+        }
+        @media (max-width: 480px) {
+          .three-d-canvas-wrap {
+            height: 360px;
+          }
+          .finish-options-grid {
+            grid-template-columns: 1fr !important;
+          }
+          .three-d-hint-badge {
+            width: calc(100% - 2rem) !important;
+            max-width: 320px !important;
+            text-align: center !important;
+            font-size: 0.7rem !important;
+            padding: 0.45rem 1rem !important;
+          }
+          .three-d-active-finish-badge {
+            top: 1rem !important;
+            right: 1rem !important;
+            font-size: 0.7rem !important;
+            padding: 0.35rem 0.85rem !important;
+          }
+        }
+      `}</style>
     </section>
   );
 };

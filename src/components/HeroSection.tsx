@@ -122,7 +122,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenBooking, onExplo
               gap: '1.25rem',
               flexWrap: 'wrap',
               marginBottom: '3rem'
-            }}>
+            }} className="hero-cta-group">
               <button
                 className="btn btn-primary"
                 onClick={onExploreSet}
@@ -150,7 +150,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenBooking, onExplo
               borderTop: '1px solid rgba(81, 27, 43, 0.12)',
               paddingTop: '1.75rem',
               maxWidth: '520px'
-            }}>
+            }} className="hero-stats-grid">
               <div>
                 <span style={{
                   display: 'block',
@@ -294,22 +294,25 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenBooking, onExplo
               </div>
 
               {/* Decorative Gold Leaf Badge Corner Accent */}
-              <div style={{
-                position: 'absolute',
-                top: '-15px',
-                right: '-15px',
-                width: '75px',
-                height: '75px',
-                borderRadius: '50%',
-                background: 'var(--color-gold-shimmer)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                boxShadow: '0 8px 20px rgba(197, 164, 109, 0.35)',
-                color: 'var(--color-espresso-deep)',
-                textAlign: 'center',
-                padding: '6px'
-              }}>
+              <div
+                style={{
+                  position: 'absolute',
+                  top: '-15px',
+                  right: '-15px',
+                  width: '75px',
+                  height: '75px',
+                  borderRadius: '50%',
+                  background: 'var(--color-gold-shimmer)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  boxShadow: '0 8px 20px rgba(197, 164, 109, 0.35)',
+                  color: 'var(--color-espresso-deep)',
+                  textAlign: 'center',
+                  padding: '6px'
+                }}
+                className="hero-atelier-choice-badge"
+              >
                 <span style={{
                   fontSize: '0.62rem',
                   fontWeight: 700,
@@ -330,7 +333,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenBooking, onExplo
           alignItems: 'center',
           justifyContent: 'center',
           gap: '0.6rem',
-          marginTop: '4rem',
+          marginTop: 'clamp(2.25rem, 5vw, 4rem)',
           color: 'var(--color-rosewood)',
           fontSize: '0.75rem',
           letterSpacing: '0.18em',
@@ -361,6 +364,23 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenBooking, onExplo
         @keyframes scrollBob {
           0%, 100% { transform: translateY(0); opacity: 1; }
           50% { transform: translateY(12px); opacity: 0.2; }
+        }
+        @media (max-width: 500px) {
+          .hero-cta-group .btn {
+            width: 100% !important;
+          }
+          .hero-stats-grid {
+            grid-template-columns: repeat(3, 1fr) !important;
+            gap: 0.85rem !important;
+          }
+        }
+        @media (max-width: 768px) {
+          .hero-atelier-choice-badge {
+            top: 8px !important;
+            right: 8px !important;
+            width: 60px !important;
+            height: 60px !important;
+          }
         }
         @media (min-width: 992px) {
           .hero-text-col {

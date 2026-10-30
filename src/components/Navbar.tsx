@@ -92,8 +92,8 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBooking }) => {
             <div>
               <span style={{
                 fontFamily: 'var(--font-serif)',
-                fontSize: '1.45rem',
-                letterSpacing: '0.18em',
+                fontSize: 'clamp(1.12rem, 4.5vw, 1.45rem)',
+                letterSpacing: 'clamp(0.08em, 1.5vw, 0.18em)',
                 fontWeight: 500,
                 color: 'var(--color-espresso)',
                 display: 'block',
@@ -103,8 +103,8 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBooking }) => {
               </span>
               <span style={{
                 fontFamily: 'var(--font-sans)',
-                fontSize: '0.62rem',
-                letterSpacing: '0.25em',
+                fontSize: 'clamp(0.52rem, 1.8vw, 0.62rem)',
+                letterSpacing: 'clamp(0.12em, 2vw, 0.25em)',
                 textTransform: 'uppercase',
                 color: 'var(--color-rosewood)',
                 display: 'block',
@@ -172,6 +172,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBooking }) => {
               justifyContent: 'center',
               width: '42px',
               height: '42px',
+              minWidth: '42px',
               borderRadius: '50%',
               border: '1px solid rgba(81, 27, 43, 0.15)',
               backgroundColor: isScrolled ? 'rgba(255, 255, 255, 0.8)' : 'rgba(250, 246, 240, 0.8)',
@@ -192,15 +193,16 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBooking }) => {
           inset: 0,
           backgroundColor: 'var(--color-ivory)',
           zIndex: 999,
-          padding: '6.5rem 2rem 3rem',
+          padding: 'clamp(5rem, 10vh, 6.5rem) 1.5rem 2.5rem',
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
+          overflowY: 'auto',
           animation: 'fadeIn 0.25s ease-out forwards'
         }}>
           <div>
             <span className="section-label" style={{ marginBottom: '1.5rem' }}>Menu</span>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
               {navLinks.map((link, idx) => (
                 <a
                   key={link.label}
@@ -211,7 +213,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBooking }) => {
                   }}
                   style={{
                     fontFamily: 'var(--font-serif)',
-                    fontSize: '1.85rem',
+                    fontSize: 'clamp(1.4rem, 5vw, 1.85rem)',
                     color: 'var(--color-espresso)',
                     textDecoration: 'none',
                     display: 'flex',

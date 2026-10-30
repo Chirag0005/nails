@@ -111,28 +111,34 @@ export const ScrollStorySection: React.FC = () => {
       }}
     >
       {/* Sticky Cinematic Stage Container */}
-      <div style={{
-        position: 'sticky',
-        top: 0,
-        height: '100vh',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        padding: '3rem 0',
-        overflow: 'hidden'
-      }}>
+      <div
+        style={{
+          position: 'sticky',
+          top: 0,
+          height: '100vh',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          padding: '3rem 0',
+          overflow: 'hidden'
+        }}
+        className="story-sticky-stage"
+      >
         <div className="container" style={{ position: 'relative', zIndex: 2 }}>
           {/* Top Progress Track */}
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            marginBottom: '2.5rem',
-            borderBottom: activeScene.theme === 'dark'
-              ? '1px solid rgba(250, 246, 240, 0.15)'
-              : '1px solid rgba(81, 27, 43, 0.12)',
-            paddingBottom: '1rem'
-          }}>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              marginBottom: '2.5rem',
+              borderBottom: activeScene.theme === 'dark'
+                ? '1px solid rgba(250, 246, 240, 0.15)'
+                : '1px solid rgba(81, 27, 43, 0.12)',
+              paddingBottom: '1rem'
+            }}
+            className="story-progress-bar"
+          >
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
               <span className={`section-label ${activeScene.theme === 'dark' ? 'light' : ''}`} style={{ marginBottom: 0 }}>
                 Cinematic Journey
@@ -240,21 +246,24 @@ export const ScrollStorySection: React.FC = () => {
                 alignItems: 'center'
               }}>
                 {/* Main Dynamic Image Container */}
-                <div style={{
-                  position: 'relative',
-                  width: '100%',
-                  maxWidth: '520px',
-                  aspectRatio: '4/3',
-                  borderRadius: 'var(--radius-lg)',
-                  overflow: 'hidden',
-                  boxShadow: activeScene.theme === 'dark'
-                    ? '0 25px 60px rgba(0, 0, 0, 0.5)'
-                    : 'var(--shadow-luxury)',
-                  border: activeScene.theme === 'dark'
-                    ? '1px solid rgba(255, 255, 255, 0.15)'
-                    : '1px solid rgba(81, 27, 43, 0.1)',
-                  transition: 'transform 0.7s cubic-bezier(0.16, 1, 0.3, 1)'
-                }}>
+                <div
+                  style={{
+                    position: 'relative',
+                    width: '100%',
+                    maxWidth: '520px',
+                    aspectRatio: '4/3',
+                    borderRadius: 'var(--radius-lg)',
+                    overflow: 'hidden',
+                    boxShadow: activeScene.theme === 'dark'
+                      ? '0 25px 60px rgba(0, 0, 0, 0.5)'
+                      : 'var(--shadow-luxury)',
+                    border: activeScene.theme === 'dark'
+                      ? '1px solid rgba(255, 255, 255, 0.15)'
+                      : '1px solid rgba(81, 27, 43, 0.1)',
+                    transition: 'transform 0.7s cubic-bezier(0.16, 1, 0.3, 1)'
+                  }}
+                  className="story-main-image-wrap"
+                >
                   <img
                     key={activeScene.image}
                     src={activeScene.image}
@@ -313,6 +322,29 @@ export const ScrollStorySection: React.FC = () => {
       </div>
 
       <style>{`
+        @media (max-width: 991px) {
+          .story-sticky-stage {
+            padding: 1.5rem 0 !important;
+            overflow-y: auto !important;
+          }
+          .story-progress-bar {
+            margin-bottom: 1.25rem !important;
+            padding-bottom: 0.6rem !important;
+          }
+          .story-main-image-wrap {
+            max-height: 220px !important;
+            aspect-ratio: 16/9 !important;
+          }
+        }
+        @media (max-width: 480px) {
+          .story-text-pane h2 {
+            margin-bottom: 0.75rem !important;
+          }
+          .story-text-pane p {
+            margin-bottom: 1rem !important;
+            font-size: 0.95rem !important;
+          }
+        }
         @media (min-width: 992px) {
           .story-text-pane {
             grid-column: span 6 !important;

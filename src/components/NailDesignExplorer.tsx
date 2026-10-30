@@ -58,7 +58,7 @@ export const NailDesignExplorer: React.FC<NailDesignExplorerProps> = ({ onOpenBo
             gap: '0.65rem',
             flexWrap: 'wrap',
             marginTop: '2rem'
-          }}>
+          }} className="explorer-mood-pills">
             {STYLE_EXPLORER_TAGS.map((tag) => {
               const isSelected = selectedTag === tag.id;
               return (
@@ -143,20 +143,23 @@ export const NailDesignExplorer: React.FC<NailDesignExplorerProps> = ({ onOpenBo
               </div>
 
               {/* Design Caption Overlay */}
-              <div style={{
-                position: 'absolute',
-                bottom: '1.5rem',
-                left: '1.5rem',
-                right: '1.5rem',
-                backgroundColor: 'rgba(41, 28, 32, 0.85)',
-                backdropFilter: 'blur(10px)',
-                borderRadius: 'var(--radius-md)',
-                padding: '1.25rem',
-                color: 'var(--color-ivory)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between'
-              }}>
+              <div
+                style={{
+                  position: 'absolute',
+                  bottom: '1.5rem',
+                  left: '1.5rem',
+                  right: '1.5rem',
+                  backgroundColor: 'rgba(41, 28, 32, 0.85)',
+                  backdropFilter: 'blur(10px)',
+                  borderRadius: 'var(--radius-md)',
+                  padding: '1.25rem',
+                  color: 'var(--color-ivory)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between'
+                }}
+                className="explorer-caption-bar"
+              >
                 <div>
                   <h4 style={{
                     fontFamily: 'var(--font-serif)',
@@ -316,6 +319,34 @@ export const NailDesignExplorer: React.FC<NailDesignExplorerProps> = ({ onOpenBo
       </div>
 
       <style>{`
+        @media (max-width: 768px) {
+          .explorer-img-col {
+            min-height: 320px !important;
+          }
+          .explorer-text-col {
+            padding: 1.5rem 1.25rem !important;
+          }
+        }
+        @media (max-width: 600px) {
+          .explorer-caption-bar {
+            bottom: 1rem !important;
+            left: 1rem !important;
+            right: 1rem !important;
+            padding: 1rem !important;
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            gap: 0.65rem !important;
+          }
+        }
+        @media (max-width: 480px) {
+          .explorer-mood-pills {
+            gap: 0.5rem !important;
+          }
+          .explorer-mood-pills button {
+            padding: 0.55rem 1rem !important;
+            font-size: 0.78rem !important;
+          }
+        }
         @media (min-width: 992px) {
           .explorer-img-col {
             grid-column: span 7 !important;
