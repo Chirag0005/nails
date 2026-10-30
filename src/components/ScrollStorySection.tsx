@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Sparkles } from 'lucide-react';
+import { Sparkles, ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface StoryScene {
   id: number;
@@ -75,16 +75,30 @@ const SCENES: StoryScene[] = [
 
 export const ScrollStorySection: React.FC = () => {
   const [activeSceneIndex, setActiveSceneIndex] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
+  const touchStartX = useRef<number | null>(null);
   const activeScene = SCENES[activeSceneIndex];
 
+  // Screen size listener
   useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 992);
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  // Desktop Scroll-Driven Scrollytelling
+  useEffect(() => {
+    if (isMobile) return; // Do not hijack scroll on mobile
+
     const handleScroll = () => {
       if (!sectionRef.current) return;
       const rect = sectionRef.current.getBoundingClientRect();
       const windowHeight = window.innerHeight;
 
-      // Calculate progress through this section (0 to 1)
       const totalDist = rect.height - windowHeight;
       if (totalDist <= 0) return;
 
@@ -97,33 +111,53 @@ export const ScrollStorySection: React.FC = () => {
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [isMobile]);
+
+  // Touch Swipe for Mobile
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX.current === null) return;
+    const touchEndX = e.changedTouches[0].clientX;
+    const diff = touchStartX.current - touchEndX;
+
+    if (Math.abs(diff) > 40) {
+      if (diff > 0 && activeSceneIndex < SCENES.length - 1) {
+        // Swipe left -> Next
+        setActiveSceneIndex(prev => prev + 1);
+      } else if (diff < 0 && activeSceneIndex > 0) {
+        // Swipe right -> Prev
+        setActiveSceneIndex(prev => prev - 1);
+      }
+    }
+    touchStartX.current = null;
+  };
+
+  const goToPrev = () => {
+    setActiveSceneIndex(prev => Math.max(prev - 1, 0));
+  };
+
+  const goToNext = () => {
+    setActiveSceneIndex(prev => Math.min(prev + 1, SCENES.length - 1));
+  };
 
   return (
     <section
       id="story"
       ref={sectionRef}
+      className="story-section-root"
       style={{
         position: 'relative',
-        minHeight: '220vh',
         backgroundColor: activeScene.bgColor,
         transition: 'background-color 0.8s cubic-bezier(0.16, 1, 0.3, 1)'
       }}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
     >
-      {/* Sticky Cinematic Stage Container */}
-      <div
-        style={{
-          position: 'sticky',
-          top: 0,
-          height: '100vh',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          padding: '3rem 0',
-          overflow: 'hidden'
-        }}
-        className="story-sticky-stage"
-      >
+      {/* Sticky Cinematic Stage Container (Sticky on desktop, Natural flow on mobile) */}
+      <div className="story-sticky-stage">
         <div className="container" style={{ position: 'relative', zIndex: 2 }}>
           {/* Top Progress Track */}
           <div
@@ -131,11 +165,13 @@ export const ScrollStorySection: React.FC = () => {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
-              marginBottom: '2.5rem',
+              marginBottom: '2rem',
               borderBottom: activeScene.theme === 'dark'
                 ? '1px solid rgba(250, 246, 240, 0.15)'
                 : '1px solid rgba(81, 27, 43, 0.12)',
-              paddingBottom: '1rem'
+              paddingBottom: '1rem',
+              flexWrap: 'wrap',
+              gap: '0.75rem'
             }}
             className="story-progress-bar"
           >
@@ -153,22 +189,24 @@ export const ScrollStorySection: React.FC = () => {
             </div>
 
             {/* Scene Selectors */}
-            <div style={{ display: 'flex', gap: '0.5rem' }}>
+            <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
               {SCENES.map((scene, idx) => (
                 <button
                   key={scene.id}
                   onClick={() => setActiveSceneIndex(idx)}
                   aria-label={`Jump to ${scene.label}`}
                   style={{
-                    height: '6px',
-                    width: activeSceneIndex === idx ? '45px' : '18px',
-                    borderRadius: '3px',
+                    height: '8px',
+                    width: activeSceneIndex === idx ? '42px' : '20px',
+                    borderRadius: '4px',
                     backgroundColor: activeSceneIndex === idx
                       ? (activeScene.theme === 'dark' ? 'var(--color-champagne)' : 'var(--color-burgundy)')
-                      : (activeScene.theme === 'dark' ? 'rgba(255,255,255,0.2)' : 'rgba(81,27,43,0.15)'),
+                      : (activeScene.theme === 'dark' ? 'rgba(255,255,255,0.25)' : 'rgba(81,27,43,0.18)'),
                     border: 'none',
                     cursor: 'pointer',
-                    transition: 'all 0.35s ease'
+                    transition: 'all 0.35s ease',
+                    padding: '8px 0',
+                    backgroundClip: 'content-box'
                   }}
                 />
               ))}
@@ -176,66 +214,8 @@ export const ScrollStorySection: React.FC = () => {
           </div>
 
           {/* Main Story Composition */}
-          <div style={{
-            display: 'grid',
-            alignItems: 'center'
-          }} className="story-main-grid">
-            {/* Left Story Text Block (Cols 1-6) */}
-            <div className="story-text-pane">
-              <span style={{
-                display: 'inline-block',
-                fontSize: '0.75rem',
-                textTransform: 'uppercase',
-                letterSpacing: '0.2em',
-                color: activeScene.theme === 'dark' ? 'var(--color-champagne-light)' : 'var(--color-rosewood)',
-                marginBottom: '0.75rem',
-                fontWeight: 600
-              }}>
-                {activeScene.subheadline}
-              </span>
-
-              <h2 className="display-2" style={{
-                color: activeScene.textColor,
-                marginBottom: '1.5rem',
-                transition: 'color 0.5s ease'
-              }}>
-                {activeScene.headline}
-              </h2>
-
-              <p style={{
-                fontSize: 'clamp(1rem, 1.3vw, 1.2rem)',
-                color: activeScene.theme === 'dark' ? 'rgba(250, 246, 240, 0.85)' : 'rgba(41, 28, 32, 0.8)',
-                lineHeight: 1.7,
-                marginBottom: '2rem',
-                maxWidth: '480px',
-                transition: 'color 0.5s ease'
-              }}>
-                {activeScene.paragraph}
-              </p>
-
-              {/* Craftsmanship Pillar Highlight */}
-              <div style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.85rem',
-                padding: '0.75rem 1.4rem',
-                borderRadius: 'var(--radius-full)',
-                backgroundColor: activeScene.theme === 'dark'
-                  ? 'rgba(255, 255, 255, 0.08)'
-                  : 'rgba(81, 27, 43, 0.06)',
-                border: activeScene.theme === 'dark'
-                  ? '1px solid rgba(197, 164, 109, 0.3)'
-                  : '1px solid rgba(81, 27, 43, 0.15)',
-                color: activeScene.textColor
-              }}>
-                <Sparkles size={16} style={{ color: 'var(--color-champagne)' }} />
-                <span style={{ fontSize: '0.85rem', fontWeight: 600, letterSpacing: '0.04em' }}>
-                  {activeScene.pillar}
-                </span>
-              </div>
-            </div>
-
-            {/* Right Visual Image Showcase (Cols 7-12) */}
+          <div className="story-main-grid">
+            {/* Story Image Pane (Order 1 on mobile, Order 2 / Cols 7-12 on desktop) */}
             <div className="story-img-pane">
               <div style={{
                 position: 'relative',
@@ -279,20 +259,22 @@ export const ScrollStorySection: React.FC = () => {
                     position: 'absolute',
                     bottom: '1rem',
                     left: '1rem',
-                    backgroundColor: 'rgba(26, 16, 20, 0.82)',
+                    backgroundColor: 'rgba(26, 16, 20, 0.85)',
                     backdropFilter: 'blur(8px)',
+                    WebkitBackdropFilter: 'blur(8px)',
                     color: 'var(--color-ivory)',
                     padding: '0.45rem 1rem',
                     borderRadius: 'var(--radius-full)',
                     fontSize: '0.72rem',
                     letterSpacing: '0.1em',
-                    textTransform: 'uppercase'
+                    textTransform: 'uppercase',
+                    boxShadow: '0 4px 12px rgba(0,0,0,0.3)'
                   }}>
                     {activeScene.badge}
                   </div>
                 </div>
 
-                {/* Overlapping Secondary Depth Card (if present) */}
+                {/* Overlapping Secondary Depth Card (Desktop only) */}
                 {activeScene.secondaryImage && (
                   <div style={{
                     position: 'absolute',
@@ -315,51 +297,213 @@ export const ScrollStorySection: React.FC = () => {
                 )}
               </div>
             </div>
+
+            {/* Story Text Pane (Order 2 on mobile, Order 1 / Cols 1-6 on desktop) */}
+            <div className="story-text-pane">
+              <span style={{
+                display: 'inline-block',
+                fontSize: '0.75rem',
+                textTransform: 'uppercase',
+                letterSpacing: '0.2em',
+                color: activeScene.theme === 'dark' ? 'var(--color-champagne-light)' : 'var(--color-rosewood)',
+                marginBottom: '0.75rem',
+                fontWeight: 600
+              }}>
+                {activeScene.subheadline}
+              </span>
+
+              <h2 className="display-2" style={{
+                color: activeScene.textColor,
+                marginBottom: '1.25rem',
+                transition: 'color 0.5s ease'
+              }}>
+                {activeScene.headline}
+              </h2>
+
+              <p style={{
+                fontSize: 'clamp(0.95rem, 1.25vw, 1.15rem)',
+                color: activeScene.theme === 'dark' ? 'rgba(250, 246, 240, 0.85)' : 'rgba(41, 28, 32, 0.8)',
+                lineHeight: 1.7,
+                marginBottom: '1.75rem',
+                maxWidth: '480px',
+                transition: 'color 0.5s ease'
+              }}>
+                {activeScene.paragraph}
+              </p>
+
+              {/* Craftsmanship Pillar Highlight */}
+              <div style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.85rem',
+                padding: '0.75rem 1.4rem',
+                borderRadius: 'var(--radius-full)',
+                backgroundColor: activeScene.theme === 'dark'
+                  ? 'rgba(255, 255, 255, 0.08)'
+                  : 'rgba(81, 27, 43, 0.06)',
+                border: activeScene.theme === 'dark'
+                  ? '1px solid rgba(197, 164, 109, 0.3)'
+                  : '1px solid rgba(81, 27, 43, 0.15)',
+                color: activeScene.textColor
+              }}>
+                <Sparkles size={16} style={{ color: 'var(--color-champagne)' }} />
+                <span style={{ fontSize: '0.85rem', fontWeight: 600, letterSpacing: '0.04em' }}>
+                  {activeScene.pillar}
+                </span>
+              </div>
+
+              {/* Mobile Interactive Navigation Row */}
+              <div className={`story-mobile-nav-row ${activeScene.theme === 'light' ? 'light-theme' : ''}`}>
+                <button
+                  onClick={goToPrev}
+                  disabled={activeSceneIndex === 0}
+                  aria-label="Previous story chapter"
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.4rem',
+                    padding: '0.65rem 1.1rem',
+                    borderRadius: 'var(--radius-full)',
+                    border: activeScene.theme === 'dark' ? '1px solid rgba(255,255,255,0.2)' : '1px solid rgba(81,27,43,0.2)',
+                    backgroundColor: 'transparent',
+                    color: activeScene.textColor,
+                    fontSize: '0.78rem',
+                    fontWeight: 600,
+                    letterSpacing: '0.06em',
+                    opacity: activeSceneIndex === 0 ? 0.35 : 1,
+                    cursor: activeSceneIndex === 0 ? 'not-allowed' : 'pointer'
+                  }}
+                >
+                  <ChevronLeft size={16} />
+                  <span>Previous</span>
+                </button>
+
+                <span style={{
+                  fontSize: '0.75rem',
+                  letterSpacing: '0.12em',
+                  textTransform: 'uppercase',
+                  color: activeScene.theme === 'dark' ? 'var(--color-champagne-light)' : 'var(--color-rosewood)'
+                }}>
+                  {activeSceneIndex + 1} of {SCENES.length}
+                </span>
+
+                <button
+                  onClick={goToNext}
+                  disabled={activeSceneIndex === SCENES.length - 1}
+                  aria-label="Next story chapter"
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.4rem',
+                    padding: '0.65rem 1.1rem',
+                    borderRadius: 'var(--radius-full)',
+                    border: 'none',
+                    backgroundColor: activeScene.theme === 'dark' ? 'var(--color-champagne)' : 'var(--color-burgundy)',
+                    color: activeScene.theme === 'dark' ? 'var(--color-espresso-deep)' : 'var(--color-ivory)',
+                    fontSize: '0.78rem',
+                    fontWeight: 600,
+                    letterSpacing: '0.06em',
+                    opacity: activeSceneIndex === SCENES.length - 1 ? 0.35 : 1,
+                    cursor: activeSceneIndex === SCENES.length - 1 ? 'not-allowed' : 'pointer'
+                  }}
+                >
+                  <span>Next Chapter</span>
+                  <ChevronRight size={16} />
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
       <style>{`
-        .story-main-grid {
-          grid-template-columns: 1fr;
-          gap: 1.5rem;
-        }
         @media (max-width: 991px) {
-          .story-sticky-stage {
-            padding: 1.5rem 0 !important;
-            overflow-y: auto !important;
+          .story-section-root {
+            min-height: auto !important;
+            padding: clamp(3.5rem, 8vw, 5.5rem) 0 !important;
           }
-          .story-progress-bar {
-            margin-bottom: 1.25rem !important;
-            padding-bottom: 0.6rem !important;
+          .story-sticky-stage {
+            position: relative !important;
+            top: auto !important;
+            height: auto !important;
+            padding: 0 !important;
+            overflow: visible !important;
+          }
+          .story-main-grid {
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 1.75rem !important;
+          }
+          .story-img-pane {
+            order: 1 !important;
+            width: 100% !important;
+          }
+          .story-text-pane {
+            order: 2 !important;
+            width: 100% !important;
           }
           .story-main-image-wrap {
-            max-height: 220px !important;
-            aspect-ratio: 16/9 !important;
+            aspect-ratio: 16/10 !important;
+            max-height: 280px !important;
+            width: 100% !important;
           }
-        }
-        @media (max-width: 480px) {
           .story-text-pane h2 {
+            font-size: clamp(1.75rem, 5.5vw, 2.35rem) !important;
             margin-bottom: 0.75rem !important;
+            line-height: 1.15 !important;
           }
           .story-text-pane p {
-            margin-bottom: 1rem !important;
             font-size: 0.95rem !important;
+            margin-bottom: 1.25rem !important;
+            line-height: 1.65 !important;
+          }
+          .story-mobile-nav-row {
+            display: flex !important;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.75rem;
+            margin-top: 1.5rem;
+            padding-top: 1.25rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.12);
+          }
+          .story-mobile-nav-row.light-theme {
+            border-top: 1px solid rgba(81, 27, 43, 0.12);
           }
         }
+
         @media (min-width: 992px) {
+          .story-section-root {
+            min-height: 220vh !important;
+          }
+          .story-sticky-stage {
+            position: sticky !important;
+            top: 0 !important;
+            height: 100vh !important;
+            display: flex !important;
+            flex-direction: column !important;
+            justify-content: center !important;
+            padding: 3rem 0 !important;
+            overflow: hidden !important;
+          }
           .story-main-grid {
+            display: grid !important;
             grid-template-columns: repeat(12, 1fr) !important;
             gap: 3rem !important;
+            align-items: center !important;
           }
           .story-text-pane {
             grid-column: span 6 !important;
+            order: 1 !important;
           }
           .story-img-pane {
             grid-column: span 6 !important;
+            order: 2 !important;
           }
           .story-depth-card {
             display: block !important;
+          }
+          .story-mobile-nav-row {
+            display: none !important;
           }
         }
       `}</style>
