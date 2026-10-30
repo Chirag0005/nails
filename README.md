@@ -1,32 +1,52 @@
-# React + TypeScript + Vite
+# MAISON NAILS — Haute Atelier Paris & London
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+A luxury, interactive digital flagship for **MAISON NAILS** featuring an interactive 3D nail sculpture atelier, editorial photography, and a multi-step booking engine.
 
-Currently, two official plugins are available:
+## 🚀 One-Click Deploy to Vercel
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+The project is pre-configured for Vercel with a production-ready [`vercel.json`](./vercel.json).
 
-## React Compiler
+### Method 1: Via Vercel Dashboard (Recommended)
+1. Go to your [Vercel Dashboard](https://vercel.com/dashboard).
+2. Click **"Add New..."** > **"Project"**.
+3. Import the GitHub repository: **`Chirag0005/nails`**.
+4. The build settings are auto-detected:
+   - **Framework Preset**: `Vite`
+   - **Build Command**: `npm run build`
+   - **Output Directory**: `dist`
+5. Click **"Deploy"**.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+### Method 2: Via Vercel CLI
+```bash
+npx vercel
+```
+For production:
+```bash
+npx vercel --prod
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+---
+
+## 🛠️ Tech Stack
+- **Framework**: React 19 + TypeScript + Vite
+- **3D Graphics**: Three.js (WebGL procedural physical sculpture & studio lighting)
+- **Icons**: Lucide React
+- **Confetti**: Canvas Confetti
+- **Styling**: Vanilla CSS Design System with CSS Custom Properties
+
+---
+
+## 💻 Local Development
+```bash
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+
+# Build for production
+npm run build
+
+# Preview production build
+npm run preview
+```
